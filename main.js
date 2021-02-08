@@ -1,0 +1,1 @@
+console.log("Hey, welcome to Valeria's Tutorial 1! Can't wait to improve my coding skills") 
