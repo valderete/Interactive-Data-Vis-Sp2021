@@ -5,8 +5,8 @@ d3.csv('../data/squirrelActivities.csv', d3.autoType)
 // constants
 const width = window.innerWidth *.8 ;
 const height = window.innerHeight/2;
-const margin = ({ top: 20, right: 20, bottom: 0, left: 60 })
-const color = d3.scaleSequential()
+const margin = ({ top: 20, right: 40, bottom: 20, left: 60 })
+const color = d3.scaleSequential() // color scale
     .domain([10, d3.max(data, d => d.count)])
     .interpolator(d3.scaleOrdinal(d3.schemeAccent))
 
@@ -46,7 +46,7 @@ svg.selectAll("text.activity")
     .attr("class",'activity')
     .attr("y",d=> yScale(d.activity)+(yScale.bandwidth()/2))
     .attr("x",0,d=> xScale(d.count))
-    .attr("text-anchor",'left')
+    .attr("x",d=> 2)
     .text(d=> d.activity)
 
 //count right
@@ -55,6 +55,6 @@ svg.selectAll("text.count")
     .join("text")
     .attr("class",'count')
     .attr("y",d => yScale(d.activity)+(yScale.bandwidth()/2))
-    .attr("x",d=> 70)
+    .attr("x",d=> 70) // to allign counts
     .text(d=> d.count)
 })
