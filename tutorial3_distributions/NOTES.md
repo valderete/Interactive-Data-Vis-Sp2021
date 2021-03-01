@@ -1,4 +1,5 @@
 ## NOTES
+I am having trouble with the filter exit action -- nothing is exiting when a filter is selected. I believe this has to do with my coding in the "FILTER DATA BASED ON STATE" section. 
 
 -----------
 INSTRUCTIONS:
