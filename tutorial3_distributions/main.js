@@ -54,9 +54,9 @@ function init() {
   // + add event listener for 'change'
     dropdown.on("change", event => {
       // 'event' holds all the event information that triggered this callback
-      console.log("DROPDOWN CALLBACK: new value is", event.target.value);
+      console.log("dropdown change", event.target.value)
       // save this new selection to application state
-      state.selectedParty = event.target.value
+      state.selectStatus = event.target.value
       console.log("NEW STATE:", state);
       draw(); // re-draw the graph based on this new selection
   });
@@ -99,45 +99,51 @@ function draw() {
   // + FILTER DATA BASED ON STATE
   const filteredData = state.data // <--- update to filter
   .filter(d => {
-    if (state.selectStatus == "All") return true
+    if (state.selectStatus === "All") return true
     else return d.Diabetes == state.selectStatus
+    
   })
 
   // + DRAW CIRCLES
-  const dot = svg
     svg.selectAll("circle")
     .data(filteredData, d => d.ID) // new column w unique key for that row
     .join(
       // + HANDLE ENTER SELECTION
       enter => enter.append("circle")
-      .attr("r", radius)
+      .attr("r", "4.5")
       .attr("fill", d => {
         if(d.Diabetes == "1") return "#df0d0d"
         else return "#7dd3ba"})
       .attr("cx", d => xScale(d.Age)) // start dots on the left
       .attr("cy", d => yScale(d.BMI))
-      .call(sel => sel.transition()
-        .duration(100)
+      .call(enter => enter.transition()
+        .duration(500)
+        .attr("r", "4.5" * 2)
+        .attr("fill-opacity","0.7")
+        .transition()
+        .duration(500)
+        .attr("r", "4.5")
         .attr("cx", d => xScale(d.Age)) // transition to correct position
       ),
 
       // + HANDLE UPDATE SELECTION
       update => update
-      .call(sel => sel
+      .call(update => update.transition()
+        .duration(500)
+        .attr("r", "4.5" * 0.5) // increase radius size
         .transition()
-        .duration(300)
-        .attr("r", radius * 0.5) // increase radius size
-        .transition()
-        .duration(300)
-        .attr("r", radius) // bring it back to original size
+        .duration(500)
+        .attr("r", "4.5") // bring it back to original size
       ),
 
       // + HANDLE EXIT SELECTION
       exit => exit
         .call(sel => sel
-        .transition()
-        .duration(500)
-        .remove()
+          .attr("opacity", 1)
+          .transition()
+          .duration(500)
+          .attr("opacity",0)
+          .remove()
       )
     );
 }
