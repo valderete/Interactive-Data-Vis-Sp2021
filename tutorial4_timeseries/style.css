@@ -1,0 +1,23 @@
+svg {
+    border: #f7941c 4px solid;
+  }
+html {
+    background-color: #ebebeb;
+  }
+  h1 {
+    font-size: 30px;
+    text-align: center;
+  }
+p {
+    text-align: center;
+}
+h4 {
+    text-align: center;
+}
+select id{
+    text-align: center;
+}
+div {
+    text-align: center;
+    }
+}

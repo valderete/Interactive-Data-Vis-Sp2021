@@ -1,5 +1,5 @@
 ## NOTES
-
+I am trying to use months within the same year for my time series, however, my line/area chart disappears when I convert the month values to the correct date format... currently, my line/area chart only appears when I leave d3.AutoType rather than updating to reformat my data, but my months appear as follows as seen in my delpoyed example. I am going to proeceed with trial and error fixes in an attempt to have my months appear correctly while retaining my line/area chart. -Valeria
 -----------
 INSTRUCTIONS:
 Use this markdown file to keep track of open questions/challenges from this week's assignment.
