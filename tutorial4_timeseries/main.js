@@ -113,10 +113,7 @@ function draw() {
 
   // + UPDATE AXIS/AXES, if needed
 
-
   // + DRAW CIRCLES/LABEL GROUPS, if you decide to
-
-
   
   // + DEFINE LINE GENERATOR FUNCTION
   const areaGen = d3.area()
