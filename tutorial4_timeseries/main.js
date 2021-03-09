@@ -16,12 +16,18 @@ let yAxisGroup;
 /* APPLICATION STATE */
 let state = {
   data: [],
-  selectStatus: "Music Theory", // + YOUR FILTER SELECTION
+  selectStatus: "Select a Class Type", // + YOUR FILTER SELECTION
 };
 
 /* LOAD DATA */
 // + SET YOUR DATA PATH
-d3.csv("../data/CHTclasscount.csv", d3.autoType)
+d3.csv("../data/CHTclasscount.csv", d => {
+  return{
+    ClassType: d.ClassType,
+    ClassCount: +d.ClassCount,
+    Month: new Date(2020, d.Month, 1)
+  }
+})
   .then(data => {
     console.log("loaded data:", data);
     state.data = data;
@@ -50,11 +56,13 @@ const dropdown = d3.select("#dropdown") // select dropdown from HTML
   // add in dropdown options from the unique values in the data
   dropdown.selectAll("option")
     .data([
-      { key: "Music Theory", label: "Music Theory"},
-      { key: "Accordion Lesson", label: "Accordion Lesson"}])
-    .join("option")
-    .attr("value", d => d.key) // set the key to the 'value' -- what we will use to FILTER our data later
-    .text(d => d.label);
+      // manually add the first value
+      "Select a Class Type",
+      // add in all the unique values from the dataset
+      ...new Set(state.data.map(d => d.ClassType))])
+      .join("option")
+      .attr("attr", d => d)
+      .text(d => d)
 
   // + SET SELECT ELEMENT'S DEFAULT VALUE (optional)
   dropdown.on("change", event => {
@@ -108,11 +116,14 @@ function draw() {
 
   // + DRAW CIRCLES/LABEL GROUPS, if you decide to
 
+
+  
   // + DEFINE LINE GENERATOR FUNCTION
   const areaGen = d3.area()
     .x(d => xScale(d.Month))
     .y0(height - margin.bottom)
     .y1(d => yScale(d.ClassCount))
+
   // + DRAW LINE AND/OR AREA
   svg.selectAll("path.area")
     .data([filteredData]) // data needs to take an []
@@ -120,4 +131,6 @@ function draw() {
     .attr("class", 'line')
     .attr("fill", "#f7941c")
     .attr("d", d => areaGen(d))
+
+    
   }
