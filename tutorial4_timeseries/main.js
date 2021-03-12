@@ -43,7 +43,7 @@ function init() {
     .range([margin.right, width - margin.left])
 
   yScale = d3.scaleLinear()
-    .domain(d3.extent(state.data, d => d.ClassCount))
+    .domain([0, d3.max(state.data, d => d.ClassCount)])
     .range([height - margin.bottom, margin.top])
 
   // + AXES
@@ -70,6 +70,7 @@ const dropdown = d3.select("#dropdown") // select dropdown from HTML
     console.log('New selection!', state)
     draw(); // re-draw the graph based on this new selection
   });
+  
   // + CREATE SVG ELEMENT
   svg = d3.select("#d3-container")
     .append("svg")
@@ -82,7 +83,7 @@ const dropdown = d3.select("#dropdown") // select dropdown from HTML
     .attr("transform", `translate(${0}, ${height - margin.bottom})`)
     .call(xAxis)
     .append("text") // add xAxis label
-      .attr("font-size", "17")
+      .attr("font-size", "20")
       .attr("transform", `translate(${width / 2}, ${40})`)
       .attr("fill", "#12395c")
       .text("Month")
@@ -92,7 +93,7 @@ const dropdown = d3.select("#dropdown") // select dropdown from HTML
     .attr("transform", `translate(${margin.right}, ${0})`)
     .call(yAxis)
     .append("text") // add yAxis label
-      .attr("font-size", "17")
+      .attr("font-size", "20")
       .attr("transform", `translate(${-35}, ${height / 2})`)
       .attr("fill", "#12395c")
       .attr("writing-mode", "vertical-lr")
@@ -106,28 +107,67 @@ const dropdown = d3.select("#dropdown") // select dropdown from HTML
 function draw() {
   // + FILTER DATA BASED ON STATE
   const filteredData = state.data
-    .filter(d => state.selectStatus === d.ClassType)
+    .filter(d => d.ClassType === state.selectStatus)
     
 
   // + UPDATE SCALE(S), if needed
+ 
 
   // + UPDATE AXIS/AXES, if needed
 
   // + DRAW CIRCLES/LABEL GROUPS, if you decide to
-  
+const dots = svg
+  .selectAll(".dot")
+  .data(filteredData, d => d.Month)
+  .join(
+    enter => enter.append("g")
+      .attr("class", "dot")
+      .attr("transform", d => `translate(${xScale(d.Month)}, ${yScale(d.ClassCount)})`),
+    update => update
+      .call(update => update.transition()
+        .duration(750)
+        .attr("transform", d => `translate(${xScale(d.Month)}, ${yScale(d.ClassCount)})`)
+      ),
+    exit => exit.remove()
+  );
+
+// add circle into group
+dots.selectAll("circle")
+  .data(d => [d]) // pass along data from parent to child
+  .join("circle")
+  .attr("r", "3")
+  .attr("fill", "#black")
+
   // + DEFINE LINE GENERATOR FUNCTION
+  const lineGen = d3.line()
+    .x(d => xScale(d.Month))
+    .y(d => yScale(d.ClassCount))
+
+  // + DARW LINE
+  svg.selectAll(".line")
+    .data([filteredData]) // data needs to take an []
+    .join("path")
+    .attr("class", 'line')
+    .attr("fill", "none")
+    .attr("stroke", "#000000")
+    .transition()
+    .duration(750)
+    .attr("d", d => lineGen(d))
+
+  // + DEFINE AREA GENERATOR FUNCTION
   const areaGen = d3.area()
     .x(d => xScale(d.Month))
     .y0(height - margin.bottom)
     .y1(d => yScale(d.ClassCount))
 
-  // + DRAW LINE AND/OR AREA
+  // + DRAW AREA
   svg.selectAll("path.area")
     .data([filteredData]) // data needs to take an []
     .join("path")
-    .attr("class", 'line')
+    .attr("class", 'area')
     .attr("fill", "#f7941c")
+    .transition()
+    .duration(750)
     .attr("d", d => areaGen(d))
-
     
   }

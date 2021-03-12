@@ -1,15 +1,16 @@
 svg {
-    border: #f7941c 4px solid;
+    border: #000000 4px solid;
   }
 html {
     background-color: #ebebeb;
   }
   h1 {
-    font-size: 30px;
+    font-size: 25px;
     text-align: center;
   }
 p {
-    text-align: center;
+  font-size: 14px;  
+  text-align: center;
 }
 h4 {
     text-align: center;
@@ -19,5 +20,4 @@ select id{
 }
 div {
     text-align: center;
-    }
 }
