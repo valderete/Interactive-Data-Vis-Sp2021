@@ -88,7 +88,6 @@ function init() {
       return `translate(${x}, ${y})`
       })
 
-    // EXAMPLE #2: x/y=> lat/long
     // take mouse screen position and report location value in lat/long
     // set up event listener on our svg to see where the mouse is
     
