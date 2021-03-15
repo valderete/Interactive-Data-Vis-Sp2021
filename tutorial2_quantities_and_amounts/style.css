@@ -1,4 +1,9 @@
 svg{
+<<<<<<< HEAD
     border: rgb(0, 0, 0) 5px solid;
     background-color: whitesmoke;
   }
+=======
+  border: palevioletred 5px solid;
+}
+>>>>>>> upstream/main
