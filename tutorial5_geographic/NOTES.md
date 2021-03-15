@@ -1,5 +1,6 @@
 ## NOTES
 
+Having issues applying color attributes to the circle points. Need to troubleshoot further. Pending updates to the tooltip UI as well. 
 -----------
 INSTRUCTIONS:
 Use this markdown file to keep track of open questions/challenges from this week's assignment.
